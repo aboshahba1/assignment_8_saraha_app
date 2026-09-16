@@ -1,26 +1,20 @@
 import express from 'express';
-import { connectDb, syncDb } from './DB/connectionDB.js';
-import userRouter from "./modules/users/user.controller.js";
-import userModel from "./DB/models/user.models.js";
-import Post from "./DB/models/post.models.js";
-import "./DB/models/associations.js";
-import postRouter from "./modules/posts/post.controller.js";
-import Comment from "./DB/models/comment.models.js";
-import commentRouter from "./modules/comments/comment.controller.js";
+import {connectionDB} from "./DB/connectionDB.js"
+import bookRoutes from "./modules/books/book.routes.js";
 
 const app = express();
 const port = 3000;
 
 const bootstrap = async()=>{
     app.use(express.json())
+    await connectionDB() 
     app.use("/users", userRouter);
-    app.use("/posts", postRouter);
-    app.use("/comments", commentRouter);
+    app.use(bookRoutes);
+  
 
     app.get("/",(req,res,next)=>res.status(200).json({message:"hello world"}))
 
-    await connectDb()
-    await syncDb()
+   
     app.use("{/*demo}",(req,res,next)=>{
         res.status(404).json({
             message: `url:${req.originalUrl} with method: ${req.method} not found `,
