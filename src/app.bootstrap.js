@@ -1,16 +1,23 @@
 import express from 'express';
-import {connectionDB} from "./DB/connectionDB.js"
-import bookRoutes from "./modules/books/book.routes.js";
+import  connectDB  from "./DB/connectionDB.js";
+import userRouter from "./modules/users/users.controller.js";
+import cors from "cors"
 
 const app = express();
 const port = 3000;
 
 const bootstrap = async()=>{
+
+    app.use(cors({
+        origin: "*"
+    }))
+
     app.use(express.json())
-    await connectionDB() 
+    
+    await connectDB() 
+
     app.use("/users", userRouter);
-    app.use(bookRoutes);
-  
+   
 
     app.get("/",(req,res,next)=>res.status(200).json({message:"hello world"}))
 

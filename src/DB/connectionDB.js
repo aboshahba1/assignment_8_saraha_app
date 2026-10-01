@@ -1,15 +1,12 @@
-import { MongoClient } from'mongodb';
+import mongoose from "mongoose";
 
-const url = 'mongodb://127.0.0.1:27017';
-export const client = new MongoClient(url);
-export const connectionDB = async()=>{
-    await client.connect()
-    .then(()=>{
-        console.log(`connected successfully to server `);
-        
-    })
-    .catch((err)=>{
-        console.log(`Error connecting to MongoDB :`, err);
-        
-    })
-}
+const connectDB = async () => {
+    try {
+        await mongoose.connect("mongodb://127.0.0.1:27017/saraha_app_assignment",{serverSelectionTimeoutMS:5000});
+        console.log("Database connected successfully");
+    } catch (error) {
+        console.log("Database connection error:", error.message);
+    }
+};
+
+export default connectDB;
